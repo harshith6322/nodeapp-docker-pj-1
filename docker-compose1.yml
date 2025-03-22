@@ -23,7 +23,7 @@ services:
       - net-1
     volumes:
       - vol-1:/data/db
-      - C:\Users\rrche\Desktop\docker-temp:/apps
+      # - C:\Users\rrche\Desktop\docker-temp:/apps
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:3000 || exit 1"]
       interval: 10s
