@@ -2,21 +2,52 @@
 
 This project demonstrates a microservices architecture using Docker containers with Nginx load balancing. It consists of 4 Node.js backend services, a MongoDB database, and an Nginx reverse proxy.
 
-## Architecture
-
-- 4x Node.js backend services (nodeapp, nodeapp2, nodeapp3, nodeapp4)
-- 1x MongoDB database
-- 1x Nginx load balancer
-- Custom Docker network (net-1)
-- Persistent volume (vol-1)
-
 ## Prerequisites
 
 - Docker
 - Docker Compose
 - Git
+- Node.js & npm
 
-## Configuration
+## Getting Started
+
+1. Clone the repository:
+
+```bash
+git clone <repository-url>
+cd <repository-name>
+```
+
+2. Install dependencies for each service:
+
+```bash
+cd nodeapp
+npm install
+```
+
+3. Install Docker:
+
+- Windows/Mac: Download and install Docker Desktop from [Docker Hub](https://www.docker.com/products/docker-desktop)
+- Linux:
+
+```bash
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+```
+
+4. Start the services:
+
+```bash
+docker-compose up -d
+```
+
+5. Access the application:
+
+```
+http://localhost:80
+```
+
+## Services & Configuration
 
 ### Service Ports
 
@@ -28,11 +59,6 @@ This project demonstrates a microservices architecture using Docker containers w
   - nodeapp4: 3003
 - MongoDB: 27017
 
-### MongoDB Credentials
-
-- Username: mongo
-- Password: 123456
-
 ## Features
 
 - Load balancing across 4 backend services
@@ -40,38 +66,3 @@ This project demonstrates a microservices architecture using Docker containers w
 - Persistent data storage
 - Automatic container restart
 - Network isolation
-
-## Running the Application
-
-1. Clone the repository
-2. Start the services:
-
-```bash
-docker-compose up -d
-```
-
-3. Access the application:
-
-```
-http://localhost:80
-```
-
-## Health Checks
-
-Backend services include health checks with:
-
-- 10-second intervals
-- 5-second timeouts
-- 6 retries
-- 60-second start period
-
-## Networks and Volumes
-
-- Network `net-1`: Internal communication between services
-- Volume `vol-1`: Persistent storage for MongoDB data
-
-## Notes
-
-- Nginx configuration is mounted from `./nginx/load-balancer.conf`
-- Backend services are automatically load balanced
-- All services restart automatically on failure

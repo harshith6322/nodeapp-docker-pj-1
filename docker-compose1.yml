@@ -1,0 +1,39 @@
+services:
+  mongodb:
+    container_name: mongodb
+    image: mongo
+    environment:
+      MONGODBPASS: 123456
+      MONGODBUSER: mongo
+    ports:
+      - 27017:27017
+    networks:
+      - net-1
+    volumes:
+      - vol-1:/data/db
+  nodeapp:
+    container_name: nodeapp
+    depends_on:
+      - mongodb
+    build:
+      context: .
+    ports:
+      - 3000:3000
+    networks:
+      - net-1
+    volumes:
+      - vol-1:/data/db
+      - C:\Users\rrche\Desktop\docker-temp:/apps
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:3000 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 60s
+    restart: always
+
+volumes:
+  vol-1:
+
+networks:
+  net-1:

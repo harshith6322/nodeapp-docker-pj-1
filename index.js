@@ -2,9 +2,10 @@ import express from "express";
 
 const app = express();
 
-app.get("/h", (req, res) => {
+app.get("/", (req, res) => {
   res.json({
     health: true,
+    server: 3,
   });
 });
 
