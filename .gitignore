@@ -47,3 +47,4 @@ temp/
 ._*
 .Spotlight-V100
 .Trashes
+docker-compose.yml 
