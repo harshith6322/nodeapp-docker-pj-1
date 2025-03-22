@@ -66,5 +66,3 @@ http://localhost:80
 - Persistent data storage
 - Automatic container restart
 - Network isolation
-
-//testing
