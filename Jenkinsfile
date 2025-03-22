@@ -1,5 +1,5 @@
 pipeline {
-    agent { label 'docker_node' } // Slave node
+    agent { label 'node-js-label' } // Slave node
     environment {
         DOCKER_REGISTRY = 'nodejsapp-testing' // Replace with your Docker registry URL
         IMAGE_NAME = 'node-app'
@@ -17,14 +17,7 @@ pipeline {
                 }
             }
         }
-        stage('Push Docker Image') {
-            steps {
-                script {
-                    sh 'docker login $DOCKER_REGISTRY -u <username> -p <password>'
-                    sh 'docker push $DOCKER_REGISTRY/$IMAGE_NAME:latest'
-                }
-            }
-        }
+       
         stage('Run App') {
             steps {
                 script {
