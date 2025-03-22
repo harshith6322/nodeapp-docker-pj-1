@@ -1,44 +1,38 @@
 pipeline {
-    agent { label 'docker_node' } // Slave node
-    environment {
-        DOCKER_REGISTRY = 'nodejsapp-testing' // Replace with your Docker registry URL
-        IMAGE_NAME = 'node-app'
-    }
+    agent { label 'node-js-label' } // Slave node
     stages {
         stage('Checkout') {
             steps {
                 checkout scm
             }
         }
-        stage('Build Docker Image') {
+        stage('Deploy with Docker Compose') {
             steps {
                 script {
-                    sh 'docker build -t $DOCKER_REGISTRY/$IMAGE_NAME:latest .'
-                }
-            }
-        }
-        stage('Push Docker Image') {
-            steps {
-                script {
-                    sh 'docker login $DOCKER_REGISTRY -u <username> -p <password>'
-                    sh 'docker push $DOCKER_REGISTRY/$IMAGE_NAME:latest'
-                }
-            }
-        }
-        stage('Run App') {
-            steps {
-                script {
-                    sh 'docker run -d -p 3000:3000 $DOCKER_REGISTRY/$IMAGE_NAME:latest'
+                    // Bring up the services defined in docker-compose.yml
+                    sh 'docker-compose up -d'
+                    // Wait for 30 seconds
+                    echo 'Waiting for 30 seconds to verify the container is running...'
+                    sleep(time: 30, unit: 'SECONDS')
+                    // Verify containers are running
+                    sh 'docker ps'
                 }
             }
         }
     }
     post {
+        always {
+            script {
+                // Tear down the services after the pipeline finishes
+                echo 'Tearing down Docker Compose services...'
+                sh 'docker-compose down'
+            }
+        }
         success {
-            echo 'Pipeline completed successfully!'
+            echo 'Pipeline completed successfully with Docker Compose!'
         }
         failure {
-            echo 'Pipeline failed!'
+            echo 'Pipeline failed. Cleaning up Docker resources.'
         }
     }
 }
